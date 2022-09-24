@@ -21,9 +21,6 @@ info "** Starting MongoDB setup **"
 # Ensure MongoDB is stopped when this script ends.
 trap "mongodb_stop" EXIT
 
-# Ensure 'daemon' user exists when running as 'root'
-export MONGODB_DAEMON_USER="mongo"
-export MONGODB_DAEMON_GROUP="mongo"
 # am_i_root && ensure_user_exists "$MONGODB_DAEMON_USER" --group "$MONGODB_DAEMON_GROUP"
 # Fix logging issue when running as root
 am_i_root && chmod o+w "$(readlink /dev/stdout)"
