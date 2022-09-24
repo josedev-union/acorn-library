@@ -980,6 +980,7 @@ mongodb_ensure_dynamic_mode_consistency() {
         mongodb_stop
     fi
 }
+
 ###############
 # Initialize MongoDB service
 # Globals:
@@ -993,7 +994,6 @@ mongodb_initialize() {
     info "Initializing MongoDB..."
 
     rm -f "$MONGODB_PID_FILE"
-    mongodb_copy_mounted_config
     mongodb_set_net_conf "$MONGODB_CONF_FILE"
     mongodb_set_log_conf "$MONGODB_CONF_FILE"
 
