@@ -2,7 +2,7 @@
 export MONGODB_DAEMON_USER="mongo"
 export MONGODB_DAEMON_GROUP="mongo"
 export MONGODB_BASE_DIR="/"
-export MONGODB_DATA_DIR="/data"
+export MONGODB_DATA_DIR="/var/lib/mongodb"
 export MONGODB_CONF_DIR="/etc/mongo"
 export MONGODB_TMP_DIR="$MONGODB_BASE_DIR/tmp"
 export MONGODB_CONF_FILE="$MONGODB_CONF_DIR/mongodb.conf"

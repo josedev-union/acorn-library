@@ -116,6 +116,7 @@ containers: [string]: {
     }
     dirs: {
         "/acorn/scripts": "./scripts"
+        "etc/mongo": "./conf"
     }
 }
 
