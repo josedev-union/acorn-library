@@ -1,5 +1,12 @@
 #!/bin/bash
 
+RESET='\033[0m'
+RED='\033[38;5;1m'
+GREEN='\033[38;5;2m'
+YELLOW='\033[38;5;3m'
+MAGENTA='\033[38;5;5m'
+CYAN='\033[38;5;6m'
+
 print_image_welcome_page() {
     ACORN_APP_NAME="mongoDB"
     BOLD='\033[1m'
