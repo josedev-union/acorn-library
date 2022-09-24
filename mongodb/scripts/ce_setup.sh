@@ -8,9 +8,6 @@ set -o pipefail
 . /acorn/scripts/ce_mongo_utils.sh
 . /acorn/scripts/env.sh
 
-# Load environment
-# . /acorn/scripts/mongodb-env.sh
-
 print_image_welcome_page
 ############################################################################### setup
 info "** Starting MongoDB setup **"
@@ -43,25 +40,3 @@ mongodb_initialize
 mongodb_set_listen_all_conf
 
 info "** MongoDB setup finished! **"
-
-############################################################################### run
-
-cmd=$(command -v mongod)
-
-flags=("--config=$MONGODB_CONF_FILE")
-
-if [[ -n "${MONGODB_EXTRA_FLAGS:-}" ]]; then
-    read -r -a extra_flags <<< "$MONGODB_EXTRA_FLAGS"
-    flags+=("${extra_flags[@]}")
-fi
-
-flags+=("$@")
-
-info "** Starting MongoDB **"
-if am_i_root; then
-    exec gosu "$MONGODB_DAEMON_USER" "$cmd" "${flags[@]}"
-else
-    exec "$cmd" "${flags[@]}"
-fi
-
-############################################################################### end

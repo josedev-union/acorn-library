@@ -162,6 +162,9 @@ jobs: {
 if !args.isReplicaSet {
     containers: {
         "mongodb-0": {
+            if !args.diagnosticMode {
+                command: ["/acorn/scripts/ce_run.sh"]
+            }
             env: {
                 "MONGODB_EXTRA_FLAGS": "\(args.extraFlags)"
                 if args.authEnabled {
