@@ -22,4 +22,4 @@ export MONGODB_ROOT_PASSWORD_FILE=""
 export MONGODB_EXTRA_USERNAMES_FILE=""
 export MONGODB_EXTRA_DATABASES_FILE=""
 export MONGODB_EXTRA_PASSWORDS_FILE=""
-/acorn/scripts/ce_setup.sh
+/acorn/scripts/ce_run.sh

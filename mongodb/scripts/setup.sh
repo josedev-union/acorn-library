@@ -58,4 +58,4 @@ if [[ "$MONGODB_REPLICA_SET_MODE" == "secondary" ]]; then
     export MONGODB_EXTRA_DATABASES_FILE=""
     export MONGODB_EXTRA_PASSWORDS_FILE=""
 fi
-/acorn/scripts/ce_setup.sh
+/acorn/scripts/ce_run.sh
