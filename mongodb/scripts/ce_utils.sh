@@ -34,6 +34,23 @@ is_boolean_yes() {
     fi
 }
 
+########################
+# Print to STDERR
+# Arguments:
+#   Message to print
+# Returns:
+#   None
+#########################
+stderr_print() {
+    # 'is_boolean_yes' is defined in libvalidations.sh, but depends on this file so we cannot source it
+    local bool="${BITNAMI_QUIET:-false}"
+    # comparison is performed without regard to the case of alphabetic characters
+    shopt -s nocasematch
+    if ! [[ "$bool" = 1 || "$bool" =~ ^(yes|true)$ ]]; then
+        printf "%b\\n" "${*}" >&2
+    fi
+}
+
 log() {
     stderr_print "${CYAN}${MODULE:-} ${MAGENTA}$(date "+%T.%2N ")${RESET}${*}"
 }
