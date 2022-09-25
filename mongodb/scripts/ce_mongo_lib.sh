@@ -799,6 +799,7 @@ mongodb_start_bg() {
     is_mongodb_running && return
 
     if am_i_root; then
+        debug "${flags[@]}"
         gosu "$MONGODB_DAEMON_USER" "$MONGODB_BIN_DIR/mongod" "${flags[@]}"
     else
         "$MONGODB_BIN_DIR/mongod" "${flags[@]}"
