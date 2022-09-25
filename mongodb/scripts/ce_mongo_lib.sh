@@ -873,6 +873,35 @@ mongodb_execute() {
 }
 
 ########################
+# Create a MongoDB user and provide read/write permissions on a database
+# Globals:
+#   MONGODB_ROOT_PASSWORD
+# Arguments:
+#   $1 - Name of user
+#   $2 - Password for user
+#   $3 - Name of database (empty for default database)
+# Returns:
+#   None
+#########################
+mongodb_create_user() {
+    local -r user="${1:?user is required}"
+    local -r password="${2:-}"
+    local -r database="${3:-}"
+    local query
+
+    if [[ -z "$password" ]]; then
+        warn "Cannot create user '$user', no password provided"
+        return 0
+    fi
+    # Build proper query (default database or specific one)
+    query="db.getSiblingDB('$database').createUser({ user: '$user', pwd: '$password', roles: [{role: 'readWrite', db: '$database'}] })"
+    [[ -z "$database" ]] && query="db.getSiblingDB(db.stats().db).createUser({ user: '$user', pwd: '$password', roles: [{role: 'readWrite', db: db.getSiblingDB(db.stats().db).stats().db }] })"
+    # Create user, discarding mongo CLI output for clean logs
+    info "Creating user '$user'..."
+    mongodb_execute "$MONGODB_ROOT_USER" "$MONGODB_ROOT_PASSWORD" "" "127.0.0.1" <<<"$query"
+}
+
+########################
 # Create the appropriate users
 # Globals:
 #   MONGODB_*
