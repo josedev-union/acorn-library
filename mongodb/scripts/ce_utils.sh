@@ -43,7 +43,7 @@ is_boolean_yes() {
 #########################
 stderr_print() {
     # 'is_boolean_yes' is defined in libvalidations.sh, but depends on this file so we cannot source it
-    local bool="${BITNAMI_QUIET:-false}"
+    local bool="${ACORN_QUIET:-false}"
     # comparison is performed without regard to the case of alphabetic characters
     shopt -s nocasematch
     if ! [[ "$bool" = 1 || "$bool" =~ ^(yes|true)$ ]]; then
@@ -152,6 +152,25 @@ am_i_root() {
         true
     else
         false
+    fi
+}
+
+########################
+# Log a 'debug' message
+# Globals:
+#   ACORN_DEBUG
+# Arguments:
+#   None
+# Returns:
+#   None
+#########################
+debug() {
+    # 'is_boolean_yes' is defined in libvalidations.sh, but depends on this file so we cannot source it
+    local bool="${ACORN_DEBUG:-false}"
+    # comparison is performed without regard to the case of alphabetic characters
+    shopt -s nocasematch
+    if [[ "$bool" = 1 || "$bool" =~ ^(yes|true)$ ]]; then
+        log "${MAGENTA}DEBUG${RESET} ==> ${*}"
     fi
 }
 
