@@ -240,6 +240,7 @@ if args.isReplicaSet && args.arbiterEnabled {
                     "MONGODB_EXTRA_FLAGS": "\(args.arbiterExtraFlags)"
                 }
             }
+            dependsOn: [ for i in std.range(args.replicas) {"mongodb-\(i)"}]
         }
     }
 }
