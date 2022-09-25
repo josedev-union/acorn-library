@@ -455,6 +455,30 @@ EOF
 }
 
 ########################
+# Set "Default Write Concern"
+# https://docs.mongodb.com/manual/reference/command/setDefaultRWConcern/
+# Globals:
+#   MONGODB_*
+# Returns:
+#   Boolean
+#########################
+mongodb_set_dwc() {
+    local result
+
+    result=$(
+        mongodb_execute_print_output "$MONGODB_INITIAL_PRIMARY_ROOT_USER" "$MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD" "admin" "$MONGODB_INITIAL_PRIMARY_HOST" "$MONGODB_INITIAL_PRIMARY_PORT_NUMBER" <<EOF
+db.adminCommand({"setDefaultRWConcern" : 1, "defaultWriteConcern" : {"w" : "majority"}})
+EOF
+    )
+    if grep -q "ok: 1" <<<"$result"; then
+        debug 'Setting Default Write Concern to {"setDefaultRWConcern" : 1, "defaultWriteConcern" : {"w" : "majority"}}'
+        return 0
+    else
+        return 1
+    fi
+}
+
+########################
 # Get if arbiter node is pending
 # Globals:
 #   MONGODB_*
