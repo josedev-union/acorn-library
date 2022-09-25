@@ -51,6 +51,22 @@ stderr_print() {
     fi
 }
 
+########################
+# Check if the provided argument is an empty string or not defined
+# Arguments:
+#   $1 - Value to check
+# Returns:
+#   Boolean
+#########################
+is_empty_value() {
+    local -r val="${1:-}"
+    if [[ -z "$val" ]]; then
+        true
+    else
+        false
+    fi
+}
+
 log() {
     stderr_print "${CYAN}${MODULE:-} ${MAGENTA}$(date "+%T.%2N ")${RESET}${*}"
 }
