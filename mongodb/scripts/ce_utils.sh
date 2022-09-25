@@ -77,6 +77,25 @@ retry_while() {
     done
     return $return_value
 }
+
+########################
+# Checks whether a directory is empty or not
+# arguments:
+#   $1 - directory
+# returns:
+#   boolean
+#########################
+is_dir_empty() {
+    local -r path="${1:?missing directory}"
+    # Calculate real path in order to avoid issues with symlinks
+    local -r dir="$(realpath "$path")"
+    if [[ ! -e "$dir" ]] || [[ -z "$(ls -A "$dir")" ]]; then
+        true
+    else
+        false
+    fi
+}
+
 ########################
 # Ensure a directory exists and, optionally, is owned by the given user
 # Arguments:
