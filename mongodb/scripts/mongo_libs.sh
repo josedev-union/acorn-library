@@ -618,7 +618,7 @@ EOF
 ########################
 # Wait until initial data sync complete
 # Globals:
-#   MONGODB_LOG_FILE
+#   MONGODB_MAX_TIMEOUT
 # Arguments:
 #   None
 # Returns:
