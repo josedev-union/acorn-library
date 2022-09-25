@@ -8,13 +8,12 @@ MAGENTA='\033[38;5;5m'
 CYAN='\033[38;5;6m'
 
 print_image_welcome_page() {
-    ACORN_APP_NAME="mongoDB"
+    local -r name="${1:-}"
     BOLD='\033[1m'
     log ""
-    log "${BOLD}Welcome to the Acorn ${ACORN_APP_NAME}"
+    log "${BOLD}Welcome to the ${name}"
     log ""
 }
-
 
 ########################
 # Check if the provided argument is a boolean or is the string 'yes/true'
@@ -43,7 +42,7 @@ is_boolean_yes() {
 #########################
 stderr_print() {
     # 'is_boolean_yes' is defined in libvalidations.sh, but depends on this file so we cannot source it
-    local bool="${ACORN_QUIET:-false}"
+    local bool="${STDERR_QUIET:-false}"
     # comparison is performed without regard to the case of alphabetic characters
     shopt -s nocasematch
     if ! [[ "$bool" = 1 || "$bool" =~ ^(yes|true)$ ]]; then
@@ -67,6 +66,26 @@ is_empty_value() {
     fi
 }
 
+########################
+# Check if a provided PID corresponds to a running service
+# Arguments:
+#   $1 - PID
+# Returns:
+#   Boolean
+#########################
+is_service_running() {
+    local pid="${1:?pid is missing}"
+
+    kill -0 "$pid" 2>/dev/null
+}
+
+########################
+# Log message
+# Arguments:
+#   Message to log
+# Returns:
+#   None
+#########################
 log() {
     stderr_print "${CYAN}${MODULE:-} ${MAGENTA}$(date "+%T.%2N ")${RESET}${*}"
 }
@@ -109,6 +128,23 @@ is_dir_empty() {
         true
     else
         false
+    fi
+}
+
+########################
+# Read the provided pid file and returns a PID
+# Arguments:
+#   $1 - Pid file
+# Returns:
+#   PID
+#########################
+get_pid_from_file() {
+    local pid_file="${1:?pid file is missing}"
+
+    if [[ -f "$pid_file" ]]; then
+        if [[ -n "$(< "$pid_file")" ]] && [[ "$(< "$pid_file")" -gt 0 ]]; then
+            echo "$(< "$pid_file")"
+        fi
     fi
 }
 
@@ -159,6 +195,7 @@ ensure_dir_exists() {
         owned_by "$dir" "$owner_user" "$owner_group"
     fi
 }
+
 ########################
 # Log an 'info' message
 # Arguments:
@@ -192,6 +229,14 @@ error() {
     log "${RED}ERROR${RESET} ==> ${*}"
 }
 
+########################
+# Check if the script is currently running as root
+# Arguments:
+#   $1 - user
+#   $2 - group
+# Returns:
+#   Boolean
+#########################
 am_i_root() {
     if [[ "$(id -u)" = "0" ]]; then
         true
@@ -203,7 +248,7 @@ am_i_root() {
 ########################
 # Log a 'debug' message
 # Globals:
-#   ACORN_DEBUG
+#   GLOBAL_DEBUG_MODE
 # Arguments:
 #   None
 # Returns:
@@ -211,7 +256,7 @@ am_i_root() {
 #########################
 debug() {
     # 'is_boolean_yes' is defined in libvalidations.sh, but depends on this file so we cannot source it
-    local bool="${ACORN_DEBUG:-false}"
+    local bool="${GLOBAL_DEBUG_MODE:-false}"
     # comparison is performed without regard to the case of alphabetic characters
     shopt -s nocasematch
     if [[ "$bool" = 1 || "$bool" =~ ^(yes|true)$ ]]; then

@@ -8,7 +8,7 @@ set -o pipefail
 . /acorn/scripts/ce_mongo_lib.sh
 . /acorn/scripts/env.sh
 
-print_image_welcome_page
+print_image_welcome_page "Acorn mongoDB"
 cp /etc/mongo/mongodb.conf $MONGODB_CONF_FILE
 ############################################################################### setup
 info "** Starting MongoDB setup **"

@@ -109,6 +109,7 @@ mongodb_execute_print_output() {
 
     "$MONGODB_BIN_DIR/mongosh" "${args[@]}"
 }
+
 ########################
 # Get if primary node is initialized
 # Globals:
@@ -580,6 +581,7 @@ EOF
 
     grep -q -E "'0 secs" <<<"$result"
 }
+
 ########################
 # Wait until initial data sync complete
 # Globals:
@@ -642,7 +644,6 @@ mongodb_configure_replica_set() {
     fi
 }
 
-
 ########################
 # Apply regex in MongoDB configuration file
 # Globals:
@@ -680,6 +681,7 @@ mongodb_is_file_external() {
         false
     fi
 }
+
 ########################
 # Change bind ip address to 0.0.0.0
 # Globals:
@@ -696,6 +698,7 @@ mongodb_set_listen_all_conf() {
     mongodb_config_apply_regex "#?bindIp:.*" "#bindIp:" "$conf_file_path"
     mongodb_config_apply_regex "#?bindIpAll:.*" "bindIpAll: true" "$conf_file_path"
 }
+
 ########################
 # Enable ReplicaSetMode
 # Globals:
@@ -718,6 +721,7 @@ mongodb_set_replicasetmode_conf() {
         mongodb_config_apply_regex "enableMajorityReadConcern:.*" "enableMajorityReadConcern: $({ (is_boolean_yes "$MONGODB_ENABLE_MAJORITY_READ" || [[ "$(mongodb_get_version)" =~ ^5\..\. ]]) && echo 'true'; } || echo 'false')" "$conf_file_path"
     fi
 }
+
 ########################
 # Set the path to the keyfile in mongodb.conf
 # Globals:
@@ -733,6 +737,7 @@ mongodb_set_keyfile_conf() {
 
     mongodb_config_apply_regex "#?keyFile:.*" "keyFile: $MONGODB_KEY_FILE" "$conf_file_path"
 }
+
 ########################
 # Change common network settings
 # Globals:
@@ -749,35 +754,6 @@ mongodb_set_net_conf() {
     if [[ -n "$MONGODB_PORT_NUMBER" ]]; then
         mongodb_config_apply_regex "port:.*" "port: $MONGODB_PORT_NUMBER" "$conf_file_path"
     fi
-}
-
-########################
-# Read the provided pid file and returns a PID
-# Arguments:
-#   $1 - Pid file
-# Returns:
-#   PID
-#########################
-get_pid_from_file() {
-    local pid_file="${1:?pid file is missing}"
-
-    if [[ -f "$pid_file" ]]; then
-        if [[ -n "$(< "$pid_file")" ]] && [[ "$(< "$pid_file")" -gt 0 ]]; then
-            echo "$(< "$pid_file")"
-        fi
-    fi
-}
-########################
-# Check if a provided PID corresponds to a running service
-# Arguments:
-#   $1 - PID
-# Returns:
-#   Boolean
-#########################
-is_service_running() {
-    local pid="${1:?pid is missing}"
-
-    kill -0 "$pid" 2>/dev/null
 }
 
 ########################
@@ -819,6 +795,7 @@ is_mongodb_running() {
         is_service_running "$pid"
     fi
 }
+
 ########################
 # Check if MongoDB is not running
 # Globals:
@@ -832,6 +809,7 @@ is_mongodb_not_running() {
     ! is_mongodb_running
     return "$?"
 }
+
 ########################
 # Start MongoDB server in the background and waits until it's ready
 # Globals:
