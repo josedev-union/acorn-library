@@ -1,5 +1,5 @@
 #!/bin/bash
-. /opt/bitnami/scripts/mongodb-env.sh
+. /acorn/scripts/env.sh
 echo "Advertised Hostname: $MONGODB_ADVERTISED_HOSTNAME"
 echo "Advertised Port: $MONGODB_ADVERTISED_PORT_NUMBER"
 echo "Configuring node as a hidden node"

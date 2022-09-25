@@ -1,8 +1,8 @@
 #!/bin/bash
-. /opt/bitnami/scripts/mongodb-env.sh
-. /opt/bitnami/scripts/libfs.sh
-. /opt/bitnami/scripts/liblog.sh
-. /opt/bitnami/scripts/libvalidations.sh
+. /acorn/scripts/ce_utils.sh
+. /acorn/scripts/ce_mongo_lib.sh
+. /acorn/scripts/env.sh
+
 if is_empty_value "$MONGODB_ADVERTISED_PORT_NUMBER"; then
     export MONGODB_ADVERTISED_PORT_NUMBER="$MONGODB_PORT_NUMBER"
 fi
