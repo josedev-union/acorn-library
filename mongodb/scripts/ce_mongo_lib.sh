@@ -755,6 +755,27 @@ is_service_running() {
 
     kill -0 "$pid" 2>/dev/null
 }
+
+########################
+# Check if mongo is accepting requests
+# Globals:
+#   MONGODB_DATABASE and MONGODB_EXTRA_DATABASES
+# Arguments:
+#   None
+# Returns:
+#   Boolean
+#########################
+mongodb_is_mongodb_started() {
+    local result
+
+    result=$(
+        mongodb_execute_print_output <<EOF
+db
+EOF
+    )
+    [[ -n "$result" ]]
+}
+
 ########################
 # Check if MongoDB is running
 # Globals:
