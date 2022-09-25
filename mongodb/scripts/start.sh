@@ -1,6 +1,6 @@
 #!/bin/bash
 . /acorn/scripts/common_libs.sh
-. /acorn/scripts/mongo_libs.sh.sh
+. /acorn/scripts/mongo_libs.sh
 . /acorn/scripts/env.sh
 
 if is_empty_value "$MONGODB_ADVERTISED_PORT_NUMBER"; then

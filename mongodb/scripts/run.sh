@@ -5,7 +5,7 @@ set -o nounset
 set -o pipefail
 # set -o xtrace # Uncomment this line for debugging purposes
 . /acorn/scripts/common_libs.sh
-. /acorn/scripts/mongo_libs.sh.sh
+. /acorn/scripts/mongo_libs.sh
 . /acorn/scripts/env.sh
 
 print_image_welcome_page "Acorn mongoDB"
