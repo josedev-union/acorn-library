@@ -638,25 +638,6 @@ mongodb_config_apply_regex() {
     mongodb_conf="$(sed -E "s@$match_regex@$substitute_regex@" "$conf_file_path")"
     echo "$mongodb_conf" >"$conf_file_path"
 }
-########################
-# Change common logging settings
-# Globals:
-#   MONGODB_*
-# Arguments:
-#   None
-# Returns:
-#   None
-#########################
-mongodb_set_log_conf() {
-    local -r conf_file_path="${1:-$MONGODB_CONF_FILE}"
-    local -r conf_file_name="${conf_file_path#"$MONGODB_CONF_DIR"}"
-    if [[ -n "$MONGODB_DISABLE_SYSTEM_LOG" ]]; then
-        mongodb_config_apply_regex "quiet:.*" "quiet: $({ is_boolean_yes "$MONGODB_DISABLE_SYSTEM_LOG" && echo 'true'; } || echo 'false')" "$conf_file_path"
-    fi
-    if [[ -n "$MONGODB_SYSTEM_LOG_VERBOSITY" ]]; then
-        mongodb_config_apply_regex "verbosity:.*" "verbosity: $MONGODB_SYSTEM_LOG_VERBOSITY" "$conf_file_path"
-    fi
-}
 
 ########################
 # Check if a given file was mounted externally
@@ -995,7 +976,6 @@ mongodb_initialize() {
 
     rm -f "$MONGODB_PID_FILE"
     mongodb_set_net_conf "$MONGODB_CONF_FILE"
-    mongodb_set_log_conf "$MONGODB_CONF_FILE"
 
     if is_dir_empty "$MONGODB_DATA_DIR/db"; then
         info "Deploying MongoDB from scratch..."
