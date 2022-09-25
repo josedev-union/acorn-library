@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. /acorn/scripts/ce_utils.sh
+. /acorn/scripts/common_libs.sh
 . /acorn/scripts/env.sh
 
 ########################

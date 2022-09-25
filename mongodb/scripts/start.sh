@@ -1,6 +1,6 @@
 #!/bin/bash
-. /acorn/scripts/ce_utils.sh
-. /acorn/scripts/ce_mongo_lib.sh
+. /acorn/scripts/common_libs.sh
+. /acorn/scripts/mongo_libs.sh.sh
 . /acorn/scripts/env.sh
 
 if is_empty_value "$MONGODB_ADVERTISED_PORT_NUMBER"; then
@@ -58,4 +58,4 @@ if [[ "$MONGODB_REPLICA_SET_MODE" == "secondary" ]]; then
     export MONGODB_EXTRA_DATABASES_FILE=""
     export MONGODB_EXTRA_PASSWORDS_FILE=""
 fi
-/acorn/scripts/ce_run.sh
+/acorn/scripts/run.sh
