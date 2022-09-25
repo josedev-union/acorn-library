@@ -175,7 +175,7 @@ if !args.isReplicaSet {
                 }
             }
             dirs: {
-                "/bitnami/mongodb": "volume://mongodb-data-0"
+                "/var/lib/mongodb": "volume://mongodb-data-0"
             }
         }
     }
@@ -207,7 +207,7 @@ if args.isReplicaSet {
                     dependsOn: "mongodb-\(i-1)"
                 }
                 dirs: {
-                    "/bitnami/mongodb": "volume://mongodb-data-\(i)"
+                    "/var/lib/mongodb": "volume://mongodb-data-\(i)"
                 }
             }
         }
@@ -262,7 +262,7 @@ if args.isReplicaSet && args.hiddenReplicas > 0 {
                 }
                 dependsOn: [ for i in std.range(args.replicas) {"mongodb-\(i)"}]
                 dirs: {
-                    "/bitnami/mongodb": "volume://hidden-data-\(i)"
+                    "/var/lib/mongodb": "volume://hidden-data-\(i)"
                 }
             }
         }

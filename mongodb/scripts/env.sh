@@ -1,6 +1,6 @@
 #!/bin/bash
-export MONGODB_DAEMON_USER="mongo"
-export MONGODB_DAEMON_GROUP="mongo"
+export MONGODB_DAEMON_USER="mongodb"
+export MONGODB_DAEMON_GROUP="mongodb"
 export MONGODB_BASE_DIR="/"
 export MONGODB_DATA_DIR="/var/lib/mongodb"
 export MONGODB_CONF_DIR="/etc/mongo"

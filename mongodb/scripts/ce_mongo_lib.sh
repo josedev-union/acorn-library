@@ -800,6 +800,7 @@ mongodb_start_bg() {
 
     if am_i_root; then
         debug "${flags[@]}"
+        cat $conf_file
         gosu "$MONGODB_DAEMON_USER" "$MONGODB_BIN_DIR/mongod" "${flags[@]}"
     else
         "$MONGODB_BIN_DIR/mongod" "${flags[@]}"
