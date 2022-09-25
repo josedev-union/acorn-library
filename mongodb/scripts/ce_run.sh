@@ -9,7 +9,7 @@ set -o pipefail
 . /acorn/scripts/env.sh
 
 print_image_welcome_page
-
+cp /etc/mongo/mongodb.conf $MONGODB_CONF_FILE
 ############################################################################### setup
 info "** Starting MongoDB setup **"
 

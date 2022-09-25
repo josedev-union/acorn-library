@@ -944,6 +944,23 @@ mongodb_set_auth_conf() {
     fi
 }
 
+########################
+# Copy mounted configuration files
+# Globals:
+#   MONGODB_*
+# Arguments:
+#   None
+# Returns:
+#   None
+#########################
+mongodb_copy_mounted_config() {
+    if ! is_dir_empty "$MONGODB_MOUNTED_CONF_DIR"; then
+        if ! cp -Lr "$MONGODB_MOUNTED_CONF_DIR"/* "$MONGODB_CONF_DIR"; then
+            error "Issue copying mounted configuration files from $MONGODB_MOUNTED_CONF_DIR to $MONGODB_CONF_DIR. Make sure you are not mounting configuration files in $MONGODB_CONF_DIR and $MONGODB_MOUNTED_CONF_DIR at the same time"
+            exit 1
+        fi
+    fi
+}
 
 ########################
 # Drop local Database
@@ -998,6 +1015,7 @@ mongodb_initialize() {
     info "Initializing MongoDB..."
 
     rm -f "$MONGODB_PID_FILE"
+    mongodb_copy_mounted_config
     mongodb_set_net_conf "$MONGODB_CONF_FILE"
 
     if is_dir_empty "$MONGODB_DATA_DIR/db"; then
