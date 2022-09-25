@@ -534,6 +534,39 @@ mongodb_configure_arbiter() {
 }
 
 ########################
+# Get if hidden node is pending
+# Globals:
+#   MONGODB_*
+# Arguments:
+#   $1 - node
+#   $2 - port
+# Returns:
+#   Boolean
+#########################
+mongodb_is_hidden_node_pending() {
+    local node="${1:?node is required}"
+    local port="${2:?port is required}"
+    local result
+
+    mongodb_set_dwc
+
+    debug "Adding hidden node ${node}:${port}"
+    result=$(
+        mongodb_execute_print_output "$MONGODB_INITIAL_PRIMARY_ROOT_USER" "$MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD" "admin" "$MONGODB_INITIAL_PRIMARY_HOST" "$MONGODB_INITIAL_PRIMARY_PORT_NUMBER" <<EOF
+rs.add({host: '$node:$port', hidden: true, priority: 0})
+EOF
+    )
+    # Error code 103 is considered OK.
+    # It indicates a possiblely desynced configuration,
+    # which will become resynced when the hidden joins the replicaset.
+    if grep -q "code: 103" <<<"$result"; then
+        warn "The ReplicaSet configuration is not aligned with primary node's configuration. Starting hidden node so it syncs with ReplicaSet..."
+        return 0
+    fi
+    grep -q "ok: 1" <<<"$result"
+}
+
+########################
 # Configure hidden node
 # Globals:
 #   None

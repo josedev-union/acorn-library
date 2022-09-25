@@ -9,15 +9,8 @@ set -o pipefail
 . /acorn/scripts/env.sh
 
 print_image_welcome_page "Acorn mongoDB"
-cp /etc/mongo/mongodb.conf $MONGODB_CONF_FILE
 ############################################################################### setup
 info "** Starting MongoDB setup **"
-
-# Ensure MongoDB env var settings are valid
-# validation
-# 1. replica set authentication (arch=rs, auth_enabled=true)
-#  - replica_set_key should be non-empty
-#  - MONGODB_ROOT_PASSWORD(primary), MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD(secondary)
 
 # Ensure MongoDB is stopped when this script ends.
 trap "mongodb_stop" EXIT
@@ -27,11 +20,12 @@ am_i_root && ensure_user_exists "$MONGODB_DAEMON_USER" --group "$MONGODB_DAEMON_
 am_i_root && chmod o+w "$(readlink /dev/stdout)"
 
 # Ensure directories used by MongoDB exist and have proper ownership and permissions
-# for dir in "$MONGODB_TMP_DIR" "$MONGODB_LOG_DIR" "$MONGODB_DATA_DIR"; do
-#     ensure_dir_exists "$dir"
-#     am_i_root && chown -R "${MONGODB_DAEMON_USER}:${MONGODB_DAEMON_GROUP}" "$dir"
-# done
+for dir in "$MONGODB_TMP_DIR" "$MONGODB_LOG_DIR" "$MONGODB_DATA_DIR" "$MONGODB_CONF_DIR"; do
+    ensure_dir_exists "$dir"
+    am_i_root && chown -R "${MONGODB_DAEMON_USER}:${MONGODB_DAEMON_GROUP}" "$dir"
+done
 
+cp /etc/mongo/mongodb.conf $MONGODB_CONF_FILE
 # Ensure MongoDB is initialized
 mongodb_initialize
 
