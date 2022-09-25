@@ -375,6 +375,19 @@ EOF
 }
 
 ########################
+# Get MongoDB version
+# Globals:
+#   MONGODB_*
+# Arguments:
+#   None
+# Returns:
+#   version
+#########################
+mongodb_get_version() {
+    mongod --version 2>/dev/null | awk -F\" '/"version"/ {print $4}'
+}
+
+########################
 # Grant voting rights to secondary node
 # Globals:
 #   MONGODB_*
