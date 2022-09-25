@@ -796,6 +796,19 @@ is_mongodb_running() {
     fi
 }
 ########################
+# Check if MongoDB is not running
+# Globals:
+#   MONGODB_PID_FILE
+# Arguments:
+#   None
+# Returns:
+#   Boolean
+#########################
+is_mongodb_not_running() {
+    ! is_mongodb_running
+    return "$?"
+}
+########################
 # Start MongoDB server in the background and waits until it's ready
 # Globals:
 #   MONGODB_*
